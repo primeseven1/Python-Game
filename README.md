@@ -1,3 +1,3 @@
 # Python-Game
 
-Project that I made in school, the code is terrible, I may or may not update it idk
+Project that I made in school, it's been updated, the code is still not the best but whatever
