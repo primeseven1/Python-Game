@@ -13,13 +13,14 @@ class Laser(arcade.Sprite):
         self.enemy = enemy
     
     def update(self):
-        if self.enemy:
-            self.center_y -= self.velocity
-        else:
-            self.center_y += self.velocity
+        if window.game_playing:
+            if self.enemy:
+                self.center_y -= self.velocity
+            else:
+                self.center_y += self.velocity
 
-        if (self.bottom > 600 or self.top < 0):
-            self.remove_from_sprite_lists()
+            if (self.bottom > 600 or self.top < 0):
+                self.remove_from_sprite_lists()
 
 class Player(arcade.Sprite):
     def __init__(self, filename: str, scale: float, center_x: int, center_y: int, health: int):
