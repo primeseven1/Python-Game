@@ -6,7 +6,6 @@ import ctypes
 c_functions = ctypes.CDLL("./SO/cFunctions.so")
 
 game_playing = ctypes.c_uint(0)
-game_playing_ptr = ctypes.pointer(game_playing)
 
 class Window(arcade.Window):
     def __init__(self, width: int, height: int, title: str):
@@ -30,21 +29,20 @@ class Window(arcade.Window):
 
         self.enemy = sprites.Enemy("./PNG/enemy.png", 0.5, self.width/2, self.height + 100)
         self.enemy_sprite_list.append(self.enemy)
+        sprites.enemy_speed = 0.3
 
         self.health_text_color = arcade.color.GREEN
 
     # All key events including key release are handled in C
     def on_key_press(self, key, modifiers):
         c_key = ctypes.c_uint(key)
-        c_key_ptr = ctypes.pointer(c_key)
-        return_value = c_functions.keyPressed(c_key_ptr, self.player.move_left_ptr, self.player.move_right_ptr, game_playing_ptr)
+        return_value = c_functions.keyPressed(ctypes.byref(c_key), ctypes.byref(self.player.move_left), ctypes.byref(self.player.move_right), ctypes.byref(game_playing))
         if return_value == 1: self.setup()
         elif return_value == 2: self.player.shoot(self)
 
     def on_key_release(self, key, modifiers):
         c_key = ctypes.c_uint(key)
-        c_key_ptr = ctypes.pointer(c_key)
-        c_functions.keyReleased(c_key_ptr, self.player.move_left_ptr, self.player.move_right_ptr)
+        c_functions.keyReleased(ctypes.byref(c_key), ctypes.byref(self.player.move_left), ctypes.byref(self.player.move_right))
 
     def on_draw(self):
         arcade.start_render()
@@ -65,41 +63,42 @@ class Window(arcade.Window):
             arcade.draw_text(f"Score: {self.player.score}", self.width/2 - 50, self.height/2 - 50, arcade.color.WHITE, 18)
 
     def update(self, delta_time):
-        self.player_sprite_list.update()
-        self.enemy_sprite_list.update()
-        self.player_laser_list.update()
-        self.enemy_laser_list.update()
+        if game_playing:
+            self.player_sprite_list.update()
+            self.enemy_sprite_list.update()
+            self.player_laser_list.update()
+            self.enemy_laser_list.update()
 
-        for laser in self.player_laser_list:
-            player_laser_enemy_hitlist = arcade.check_for_collision_with_list(laser, self.enemy_sprite_list)
+            for laser in self.player_laser_list:
+                player_laser_enemy_hitlist = arcade.check_for_collision_with_list(laser, self.enemy_sprite_list)
 
-            if len(player_laser_enemy_hitlist) > 0:
-                laser.remove_from_sprite_lists()
+                if len(player_laser_enemy_hitlist) > 0:
+                    laser.remove_from_sprite_lists()
 
-                for enemy in player_laser_enemy_hitlist:
-                    enemy.center_x = random.randint(20, self.width - 20)
-                    enemy.center_y = random.randint(self.height + 30, 800)
-                    self.player.score += 1
-                    self.player.bullets += 1
+                    for enemy in player_laser_enemy_hitlist:
+                        enemy.center_x = random.randint(20, self.width - 20)
+                        enemy.center_y = random.randint(self.height + 30, 800)
+                        self.player.score += 1
+                        self.player.bullets += 1
 
-                    if self.player.score % 5 == 0:
-                        another_enemy = sprites.Enemy("./PNG/enemy.png", 0.5, random.randint(0, self.width), random.randint(self.height + 30, 800))
-                        self.enemy_sprite_list.append(another_enemy)
-                        sprites.enemy_speed += 0.05
+                        if self.player.score % 5 == 0:
+                            another_enemy = sprites.Enemy("./PNG/enemy.png", 0.5, random.randint(0, self.width), random.randint(self.height + 30, 800))
+                            self.enemy_sprite_list.append(another_enemy)
+                            sprites.enemy_speed += 0.05
 
-        for enemy in self.enemy_sprite_list:
-            if random.randint(0, 100) == 0 and enemy.center_y < self.height:
-                enemy.shoot(self)
-        
-        for enemy_laser in self.enemy_laser_list:
-            enemy_laser_player_hitlist = arcade.check_for_collision_with_list(enemy_laser, self.player_sprite_list)
+            for enemy in self.enemy_sprite_list:
+                if random.randint(0, 100) == 0 and enemy.center_y < self.height:
+                    enemy.shoot(self)
+            
+            for enemy_laser in self.enemy_laser_list:
+                enemy_laser_player_hitlist = arcade.check_for_collision_with_list(enemy_laser, self.player_sprite_list)
 
-            if len(enemy_laser_player_hitlist) > 0:
-                enemy_laser.remove_from_sprite_lists()
-                return_value = c_functions.subtractHealth(self.player.health_ptr, game_playing_ptr)
-                if return_value == 1: self.health_text_color = arcade.color.GREEN
-                elif return_value == 2: self.health_text_color = arcade.color.YELLOW
-                elif return_value == 3: self.health_text_color = arcade.color.RED   
-        
-        player_enemy_hitlist = arcade.check_for_collision_with_list(self.player, self.enemy_sprite_list)
-        if len(player_enemy_hitlist) > 0: c_functions.playerCrashIntoEnemy(game_playing_ptr); self.player.score += 1
+                if len(enemy_laser_player_hitlist) > 0:
+                    enemy_laser.remove_from_sprite_lists()
+                    return_value = c_functions.subtractHealth(ctypes.byref(self.player.health), ctypes.byref(game_playing))
+                    if return_value == 1: self.health_text_color = arcade.color.GREEN
+                    elif return_value == 2: self.health_text_color = arcade.color.YELLOW
+                    elif return_value == 3: self.health_text_color = arcade.color.RED   
+            
+            player_enemy_hitlist = arcade.check_for_collision_with_list(self.player, self.enemy_sprite_list)
+            if len(player_enemy_hitlist) > 0: c_functions.playerCrashIntoEnemy(ctypes.byref(game_playing)); self.player.score += 1

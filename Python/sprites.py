@@ -3,7 +3,7 @@ import ctypes
 import window
 
 # I could not figure out how to make a static variable
-enemy_speed = 0.3
+enemy_speed = 0
 
 class Laser(arcade.Sprite):
     def __init__(self, filename: str, scale: float, center_x: int, center_y: int, velocity: float, enemy: bool):
@@ -28,11 +28,8 @@ class Player(arcade.Sprite):
 
         self.move_left = ctypes.c_int(0)
         self.move_right = ctypes.c_int(0)
-        self.move_left_ptr = ctypes.pointer(self.move_left)
-        self.move_right_ptr = ctypes.pointer(self.move_right)
 
         self.health = ctypes.c_int(health)
-        self.health_ptr = ctypes.pointer(self.health)
 
         self.bullets = 5
         self.score = 0
