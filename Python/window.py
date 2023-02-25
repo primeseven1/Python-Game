@@ -25,23 +25,16 @@ class Window(arcade.Window):
         self.player_laser_list = arcade.SpriteList()
         self.enemy_laser_list = arcade.SpriteList()
 
-        try:
-            self.player = sprites.Player("./PNG/player.png", 0.5, self.width/2, self.height/20, 100)
-            self.player_sprite_list.append(self.player)
-        except:
-            c_functions.errorWindow(ctypes.c_int(2), ctypes.c_char_p(b"File not found \"player.png\""))
+        self.player = sprites.Player("./PNG/player.png", 0.5, self.width/2, self.height/20, 100)
+        self.player_sprite_list.append(self.player)
 
         self.health_text_color = arcade.color.GREEN
 
-        try:
-            self.enemy = sprites.Enemy("./PNG/enemy.png", 0.5, self.width/2, self.height + 100)
-            self.enemy_sprite_list.append(self.enemy)
-        except:
-            c_functions.errorWindow(ctypes.c_int(2), ctypes.c_char_p(b"File not found \"enemy.png\""))
+        self.enemy = sprites.Enemy("./PNG/enemy.png", 0.5, self.width/2, self.height + 100)
+        self.enemy_sprite_list.append(self.enemy)
 
         sprites.enemy_speed = 0.3
 
-    # All key events including key release are handled in C
     def on_key_press(self, key, modifiers):
         c_key = ctypes.c_uint(key)
         return_value = c_functions.keyPressed(ctypes.byref(c_key), ctypes.byref(self.player.move_left), ctypes.byref(self.player.move_right), ctypes.byref(game_playing))

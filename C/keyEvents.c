@@ -67,7 +67,7 @@ int keyPressed(const int* key, int* moveLeft, int* moveRight, int* gamePlaying)
 
 void keyReleased(const int* key, int* moveLeft, int* moveRight)
 {
-    // NULL pointers
+    // Checking for NULL pointers
     if (!key || !moveLeft || !moveRight)
     {
         if (!key) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"key\"");

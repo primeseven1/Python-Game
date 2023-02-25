@@ -11,8 +11,10 @@ enum Colors
     RED
 };
 
+// Called once and only once
 void setSeed() { srand(time(0)); }
 
+// This function gets called every time thge player gets hit
 int subtractHealth(int* health, int* gamePlaying)
 {
     // Checking for NULL pointers
