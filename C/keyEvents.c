@@ -1,3 +1,5 @@
+#include "./Error/errorWindow.h"
+
 #define RUN_SETUP 1
 #define SHOOT 2
 
@@ -13,6 +15,16 @@ enum keyCodes {
 
 int keyPressed(const int* key, int* moveLeft, int* moveRight, int* gamePlaying)
 {
+    if (!key || !moveLeft || !moveRight || !gamePlaying)
+    {
+        if (!key) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"key\"");
+        if (!moveLeft) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"moveLeft\"");
+        if (!moveRight) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"moveRight\"");
+        if (!gamePlaying) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"gamePlaying\"");
+
+        return 0;
+    }
+
     if (!*gamePlaying && *key == KEY_CODE_ENTER) 
     {
         *gamePlaying = 1;
@@ -48,6 +60,15 @@ int keyPressed(const int* key, int* moveLeft, int* moveRight, int* gamePlaying)
 
 void keyReleased(const int* key, int* moveLeft, int* moveRight)
 {
+    if (!key || !moveLeft || !moveRight)
+    {
+        if (!key) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"key\"");
+        if (!moveLeft) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"moveLeft\"");
+        if (!moveRight) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"moveRight\"");
+
+        return;
+    }
+
     switch(*key)
     {
     case KEY_CODE_A:

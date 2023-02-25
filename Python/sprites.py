@@ -34,11 +34,14 @@ class Player(arcade.Sprite):
         self.bullets = 5
         self.score = 0
 
-    def shoot(self, window):
+    def shoot(self, game_window):
         if self.bullets:
-            laser = Laser("./PNG/player_laser.png", 1, self.center_x, self.center_y + 25, 3, False)
-            window.player_laser_list.append(laser)
-            self.bullets -= 1
+            try:
+                laser = Laser("./PNG/player_laser.png", 1, self.center_x, self.center_y + 25, 3, False)
+                game_window.player_laser_list.append(laser)
+                self.bullets -= 1
+            except:
+                window.c_functions.errorWindow(ctypes.c_int(2), ctypes.c_char_p(b"File not found \"player_laser.png\""))
 
     def update(self):
         if self.move_left and self.center_x > 0 + 25:
@@ -51,12 +54,15 @@ class Enemy(arcade.Sprite):
         super().__init__(filename=filename, scale=scale, center_x=center_x, center_y=center_y)
         
 
-    def shoot(self, window):
-            laser = Laser("./PNG/enemy_laser.png", 1, self.center_x, self.center_y -25, 3, True)
-            window.enemy_laser_list.append(laser)
+    def shoot(self, game_window):
+            try:
+                laser = Laser("./PNG/enemy_laser.png", 1, self.center_x, self.center_y -25, 3, True)
+                game_window.enemy_laser_list.append(laser)
+            except:
+                window.c_functions.errorWindow(ctypes.c_int(2), ctypes.c_char_p(b"File not found \"enemy_laser.png\""))
 
     def update(self):
         if window.game_playing:
             self.center_y -= enemy_speed
         
-        window.c_functions.enemyPastPlayer(window.game_playing_ptr, ctypes.c_float(self.center_y))
+        window.c_functions.enemyPastPlayer(ctypes.byref(window.game_playing), ctypes.c_float(self.center_y))

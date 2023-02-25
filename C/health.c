@@ -1,9 +1,13 @@
 #include <stdlib.h>
 #include <time.h>
+#include "./Error/errorWindow.h"
 
-#define GREEN 1
-#define YELLOW 2
-#define RED 3
+enum Colors
+{
+    GREEN = 1,
+    YELLOW,
+    RED
+};
 
 void setSeed() 
 {
@@ -12,6 +16,14 @@ void setSeed()
 
 int subtractHealth(int* health, int* gamePlaying)
 {
+    if (!health || !gamePlaying)
+    {
+        if (!health) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"health\"");
+        if (!gamePlaying) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"gamePlaying\"");
+        
+        return 0;
+    }
+
     *health -= rand() % (20 - 8) + 8;
 
     if (*health < 1) 
