@@ -1,7 +1,9 @@
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include "./Error/errorWindow.h"
 
+// Based on return value determnines the color of the text
 enum Colors
 {
     GREEN = 1,
@@ -9,13 +11,11 @@ enum Colors
     RED
 };
 
-void setSeed() 
-{
-    srand(time(0));
-}
+void setSeed() { srand(time(0)); }
 
 int subtractHealth(int* health, int* gamePlaying)
 {
+    // Checking for NULL pointers
     if (!health || !gamePlaying)
     {
         if (!health) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"health\"");

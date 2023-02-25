@@ -1,7 +1,11 @@
 #include "./Error/errorWindow.h"
 
-#define RUN_SETUP 1
-#define SHOOT 2
+// These are for functions that could be called based on a return value
+enum FunctionCalls
+{
+    RUN_SETUP = 1,
+    SHOOT = 2
+};
 
 enum keyCodes {
     KEY_CODE_SPACE = 32,
@@ -15,6 +19,7 @@ enum keyCodes {
 
 int keyPressed(const int* key, int* moveLeft, int* moveRight, int* gamePlaying)
 {
+    // Checking for NULL pointers
     if (!key || !moveLeft || !moveRight || !gamePlaying)
     {
         if (!key) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"key\"");
@@ -25,12 +30,14 @@ int keyPressed(const int* key, int* moveLeft, int* moveRight, int* gamePlaying)
         return 0;
     }
 
+    // The enter key is what starts the game
     if (!*gamePlaying && *key == KEY_CODE_ENTER) 
     {
         *gamePlaying = 1;
         return RUN_SETUP;
     }
 
+    // Movement
     if (*gamePlaying)
     {
         switch(*key)
@@ -60,6 +67,7 @@ int keyPressed(const int* key, int* moveLeft, int* moveRight, int* gamePlaying)
 
 void keyReleased(const int* key, int* moveLeft, int* moveRight)
 {
+    // NULL pointers
     if (!key || !moveLeft || !moveRight)
     {
         if (!key) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"key\"");
@@ -69,6 +77,7 @@ void keyReleased(const int* key, int* moveLeft, int* moveRight)
         return;
     }
 
+    // Movement
     switch(*key)
     {
     case KEY_CODE_A:
