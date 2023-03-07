@@ -2,6 +2,7 @@
 #include <string.h>
 #include <time.h>
 #include "./Error/errorWindow.h"
+#include "save.h"
 
 // Based on return value determnines the color of the text
 enum Colors
@@ -14,8 +15,8 @@ enum Colors
 // Called once and only once
 void setSeed() { srand(time(0)); }
 
-// This function gets called every time thge player gets hit
-int subtractHealth(int* health, int* gamePlaying)
+// This function gets called every time thge player gets hit, it needs the score if the game ends
+int subtractHealth(int* health, int* gamePlaying, const int score)
 {
     // Checking for NULL pointers
     if (!health || !gamePlaying)
@@ -31,6 +32,7 @@ int subtractHealth(int* health, int* gamePlaying)
     if (*health < 1) 
     {
         *gamePlaying = 0;
+        saveScore(score);
         return 0;
     }
 

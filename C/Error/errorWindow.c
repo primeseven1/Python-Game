@@ -13,6 +13,10 @@ void errorWindow(const int errorType, const LPCSTR errorInfo)
         windowTitle = "Dereference NULL Pointer Error";
         break;
 
+    case CANNOT_SAVE:
+        windowTitle = "Cannot save recent score";
+        break;
+
     default:
         windowTitle = "Unknown error";
         break;

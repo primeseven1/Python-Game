@@ -1,4 +1,3 @@
-import sys
 import arcade
 import sprites
 import random
@@ -63,6 +62,8 @@ class Window(arcade.Window):
 
     def update(self, delta_time):
         if game_playing:
+            c_functions.setScore(self.player.score);
+
             self.player_sprite_list.update()
             self.enemy_sprite_list.update()
             self.player_laser_list.update()
@@ -94,10 +95,10 @@ class Window(arcade.Window):
 
                 if len(enemy_laser_player_hitlist) > 0:
                     enemy_laser.remove_from_sprite_lists()
-                    return_value = c_functions.subtractHealth(ctypes.byref(self.player.health), ctypes.byref(game_playing))
+                    return_value = c_functions.subtractHealth(ctypes.byref(self.player.health), ctypes.byref(game_playing), ctypes.c_int(self.player.score))
                     if return_value == 1: self.health_text_color = arcade.color.GREEN
                     elif return_value == 2: self.health_text_color = arcade.color.YELLOW
                     elif return_value == 3: self.health_text_color = arcade.color.RED   
             
             player_enemy_hitlist = arcade.check_for_collision_with_list(self.player, self.enemy_sprite_list)
-            if len(player_enemy_hitlist) > 0: c_functions.playerCrashIntoEnemy(ctypes.byref(game_playing)); self.player.score += 1
+            if len(player_enemy_hitlist) > 0: self.player.score += 1; c_functions.playerCrashIntoEnemy(ctypes.byref(game_playing), ctypes.c_int(self.player.score));

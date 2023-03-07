@@ -1,5 +1,6 @@
 import arcade
 import ctypes
+import main
 import window
 
 # I could not figure out how to make a static variable
