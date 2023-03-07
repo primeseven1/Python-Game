@@ -19,11 +19,14 @@ void setSeed() { srand(time(0)); }
 int subtractHealth(int* health, int* gamePlaying, const int score)
 {
     // Checking for NULL pointers
-    if (!health || !gamePlaying)
+    if (!health)
     {
-        if (!health) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"health\"");
-        if (!gamePlaying) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"gamePlaying\"");
-        
+        errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"health\"");
+        return 0;
+    }
+    if (!gamePlaying) 
+    {
+        errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"gamePlaying\"");
         return 0;
     }
 
