@@ -87,7 +87,7 @@ class Window(arcade.Window):
                             sprites.enemy_speed += 0.05
 
             for enemy in self.enemy_sprite_list:
-                if random.randint(0, 100) == 0 and enemy.center_y < self.height:
+                if c_functions.enemyShoot(ctypes.c_uint(self.height), ctypes.c_float(enemy.center_y), ctypes.c_uint(100)):
                     enemy.shoot(self)
             
             for enemy_laser in self.enemy_laser_list:

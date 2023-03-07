@@ -1,7 +1,7 @@
-// Rather than just crashing, it will pop up an error window, and then stop working
 #include <string.h>
 #include "errorWindow.h"
 
+// Rather than the game just not working correctly, it will give you an error window :D
 void errorWindow(const int errorType, const LPCSTR errorInfo)
 {
     LPCSTR windowTitle;
