@@ -17,21 +17,28 @@ enum keyCodes {
     KEY_CODE_ESCAPE = 65307
 };
 
-int keyPressed(const int* key, int* moveLeft, int* moveRight, int* gamePlaying)
+int keyPressed(const unsigned int key, int* moveLeft, int* moveRight, int* gamePlaying)
 {
+    // Not really liking the all the if statements too much, but i'm too lazy fix it
     // Checking for NULL pointers
-    if (!key || !moveLeft || !moveRight || !gamePlaying)
+    if (!moveLeft) 
     {
-        if (!key) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"key\"");
-        if (!moveLeft) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"moveLeft\"");
-        if (!moveRight) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"moveRight\"");
-        if (!gamePlaying) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"gamePlaying\"");
-
+        errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"moveLeft\"");
+        return 0;
+    }
+    if (!moveRight) 
+    {
+        errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"moveRight\"");
+        return 0;
+    }
+    if (!gamePlaying) 
+    {
+        errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"gamePlaying\"");
         return 0;
     }
 
     // The enter key is what starts the game
-    if (!*gamePlaying && *key == KEY_CODE_ENTER) 
+    if (!*gamePlaying && key == KEY_CODE_ENTER) 
     {
         *gamePlaying = 1;
         return RUN_SETUP;
@@ -40,7 +47,7 @@ int keyPressed(const int* key, int* moveLeft, int* moveRight, int* gamePlaying)
     // Movement
     if (*gamePlaying)
     {
-        switch(*key)
+        switch(key)
         {
         case KEY_CODE_A:
         case KEY_CODE_LEFT:
@@ -65,20 +72,23 @@ int keyPressed(const int* key, int* moveLeft, int* moveRight, int* gamePlaying)
     return 0;
 }
 
-void keyReleased(const int* key, int* moveLeft, int* moveRight)
+void keyReleased(const unsigned int key, int* moveLeft, int* moveRight)
 {
+    // Not really liking the all the if statements too much, but i'm too lazy fix it
     // Checking for NULL pointers
-    if (!key || !moveLeft || !moveRight)
+    if (!moveLeft) 
     {
-        if (!key) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"key\"");
-        if (!moveLeft) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"moveLeft\"");
-        if (!moveRight) errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"moveRight\"");
-
+        errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"moveLeft\""); 
+        return;
+    }
+    if (!moveRight) 
+    {
+        errorWindow(DEREFERENCE_NULL_POINTER, "Attempted to dereference NULL pointer \"moveRight\"");
         return;
     }
 
     // Movement
-    switch(*key)
+    switch(key)
     {
     case KEY_CODE_A:
     case KEY_CODE_LEFT:

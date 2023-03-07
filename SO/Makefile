@@ -3,7 +3,7 @@ FLAGS := -shared -fPIC -o
 
 main: keyEvents.o health.o gamePlaying.o errorWindow.o
 	gcc keyEvents.o health.o gamePlaying.o errorWindow.o $(FLAGS) cFunctions.so
-	mingw32-make clean
+	make clean
 
 keyEvents.o:
 	gcc -c $(DIR)keyEvents.c

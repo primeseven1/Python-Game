@@ -36,14 +36,12 @@ class Window(arcade.Window):
         sprites.enemy_speed = 0.3
 
     def on_key_press(self, key, modifiers):
-        c_key = ctypes.c_uint(key)
-        return_value = c_functions.keyPressed(ctypes.byref(c_key), ctypes.byref(self.player.move_left), ctypes.byref(self.player.move_right), ctypes.byref(game_playing))
+        return_value = c_functions.keyPressed(ctypes.c_uint(key), ctypes.byref(self.player.move_left), ctypes.byref(self.player.move_right), ctypes.byref(game_playing))
         if return_value == 1: self.setup()
         elif return_value == 2: self.player.shoot(self)
 
     def on_key_release(self, key, modifiers):
-        c_key = ctypes.c_uint(key)
-        c_functions.keyReleased(ctypes.byref(c_key), ctypes.byref(self.player.move_left), ctypes.byref(self.player.move_right))
+        c_functions.keyReleased(ctypes.c_uint(key), ctypes.byref(self.player.move_left), ctypes.byref(self.player.move_right))
 
     def on_draw(self):
         arcade.start_render()
