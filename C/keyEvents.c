@@ -7,7 +7,8 @@ enum FunctionCalls
     SHOOT = 2
 };
 
-enum keyCodes {
+enum keyCodes 
+{
     KEY_CODE_SPACE = 32,
     KEY_CODE_A = 97,
     KEY_CODE_D = 100,
