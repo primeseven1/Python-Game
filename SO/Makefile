@@ -1,5 +1,5 @@
 DIR = ../C
-FLAGS = -shared -fPIC -o
+FLAGS = -shared -fPIC -O2 -o
 C_SRC := $(wildcard $(DIR)/*.c) $(wildcard $(DIR)/**/*.c)
 OBJ := $(patsubst %.c, %.o, $(notdir $(C_SRC)))
 
