@@ -72,6 +72,7 @@ int keyPressed(const unsigned int key, int* moveLeft, int* moveRight, int* gameP
     return 0;
 }
 
+// This functions doesn't really care if the game is playing or not, and it doesn't need to
 void keyReleased(const unsigned int key, int* moveLeft, int* moveRight)
 {
     // Not really liking the all the if statements too much, but i'm too lazy fix it

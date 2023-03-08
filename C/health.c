@@ -5,6 +5,7 @@
 #include "save.h"
 
 // Based on return value determnines the color of the text
+// Green is 1 because 0 is used for doing nothing
 enum Colors
 {
     GREEN = 1,
