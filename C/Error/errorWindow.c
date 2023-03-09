@@ -8,7 +8,7 @@ void errorWindow(const int errorType, const LPCSTR errorInfo)
 
     // Adding the second part of the error to the error info
     char error2[] = "\n\nYou can continue, but the program will not work correctly";
-    char* fullError = malloc(strlen(errorInfo) + strlen(error2) + 1);
+    char* fullError = (char*)malloc(strlen(errorInfo) + strlen(error2) + 1);
     if (!fullError) return;
 
     strcpy_s(fullError, strlen(fullError) + strlen(errorInfo) + 1, errorInfo);
@@ -31,4 +31,7 @@ void errorWindow(const int errorType, const LPCSTR errorInfo)
     }
 
     MessageBoxA(NULL, fullError, windowTitle, MB_OK | MB_ICONERROR);
+    
+    free(fullError);
+    fullError = NULL;
 }
