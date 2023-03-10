@@ -11,4 +11,4 @@ obj:
 	gcc -c $(C_SRC)
 
 clean:
-	rm -f *.o
+	del -f *.o
